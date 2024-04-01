@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\API\AuthRequest;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 use App\Models\Admin;
 use App\Http\Controllers\Controller;
 
@@ -45,7 +48,7 @@ class RegisterController extends Controller
          */
         public function __invoke(AuthRequest $request): JsonResponse
         {
-            if ($user = User::create($request->validatedData())) {
+            if ($user = Admin::create($request->validatedData())) {
                 event(new Registered($user));
 
                 return response()->json(['code' => Response::HTTP_CREATED, 'message' => self::SUCCESS_MESSAGE,], Response::HTTP_CREATED);
